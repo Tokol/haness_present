@@ -324,7 +324,11 @@
             <div class="demo-evidence-header">
               <span>Demo Evidence 4</span>
               <h2>Extraction Agent Runs</h2>
-              <p>After validation, the agent extracts materials, formulations, and measured properties, then maps repeated materials and formulations without duplicate records.</p>
+              <p>
+                After validation, the agent extracts materials, formulations, and measured properties.
+                If another paper mentions the same material or formulation, the harness maps it to the
+                existing record instead of creating duplicates, keeping the ML pipeline clean.
+              </p>
             </div>
             <div class="demo-screenshot-pair">
               <figure class="demo-screenshot-frame accepted">
