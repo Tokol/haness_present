@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BioMaterial Agent Harness Presentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+    <link rel="icon" type="image/png" href="images/novia_uas.png" />
+    <link rel="stylesheet" href="assets/css/theme.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <img class="deck-footer-logo" src="images/novia_uas.png" alt="Novia UAS logo" />
+      <div class="slides">
+        <section class="title-slide">
+          <div class="slide-shell title-grid">
+            <div class="title-copy">
+              <h1>Dr. Bio's Material Lab</h1>
+              <p class="lead">
+                Secure Agent Harness for Biomaterial Research Paper-to-Dataset Workflow
+              </p>
+              <div class="title-meta">
+                <p>Suresh Lama</p>
+                <p>Industrial Artificial Intelligence - Agent Harness</p>
+                <p>Vaasa, 2026</p>
+              </div>
+            </div>
+            <figure class="hero-card">
+              <img src="images/Dr.Bio.png" alt="Dr. Bio mascot" />
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell quest-slide">
+            <div class="quest-copy">
+              <h2>The Quest</h2>
+              <p>
+                Build an agent harness that can use tools safely, run controlled actions,
+                and be extended without rewriting the core system.
+              </p>
+            </div>
+            <div class="quest-list" aria-label="Assignment requirements">
+              <p><span>01</span> Agent loop talking to an LLM</p>
+              <p><span>02</span> Secure file read and write tools</p>
+              <p><span>03</span> Controlled command execution</p>
+              <p><span>04</span> At least one extension: skill, MCP, or equivalent</p>
+              <p><span>05</span> Security discussion and risk handling</p>
+              <p><span>06</span> Screenshots and working demo evidence</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell problem-slide">
+            <div class="problem-copy">
+              <h2>The Bottleneck</h2>
+              <div class="problem-lower">
+                <p>
+                  Biomaterial Research papers contain formulation and property data, but turning hundreds
+                  of papers into ML-ready datasets is slow and difficult.
+                </p>
+                <ul>
+                  <li>Data is scattered across text, tables, and supplementary files</li>
+                  <li>Material names, units, and formulations are inconsistent</li>
+                  <li>Manual extraction is repetitive and error-prone</li>
+                  <li>Raw papers are not directly usable for ML training</li>
+                </ul>
+                <p class="problem-bottom">
+                  Literature knowledge exists; structured CSV data is the bottleneck.
+                </p>
+              </div>
+            </div>
+            <figure class="problem-visual">
+              <img class="zoomable-image" src="images/slide3.png" alt="Manual biomaterial paper extraction bottleneck" tabindex="0" />
+              <figcaption>Click image to enlarge</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell pipeline-slide">
+            <div class="pipeline-header">
+              <h2>What the Harness Does</h2>
+              <p>A controlled paper-to-dataset pipeline.</p>
+            </div>
+            <div class="pipeline-flow" aria-label="BioMaterial harness workflow">
+              <article>
+                <span>01</span>
+                <h3>Upload Paper</h3>
+                <p>PDF enters the harness workspace.</p>
+              </article>
+              <article>
+                <img src="images/Robo-Assist.png" alt="Robo-Assist" />
+                <span>02</span>
+                <h3>Validate</h3>
+                <p>Check relevance, duplicates, quality, and unsafe text.</p>
+              </article>
+              <article class="reject-step">
+                <span>03</span>
+                <h3>Reject or Continue</h3>
+                <p>Invalid papers stop before extraction.</p>
+              </article>
+              <article>
+                <img src="images/Mixer.png" alt="Mixer" />
+                <span>04</span>
+                <h3>Extract Evidence</h3>
+                <p>Materials, formulations, processing, and properties.</p>
+              </article>
+              <article>
+                <img src="images/Scope.png" alt="Scope" />
+                <span>05</span>
+                <h3>Write CSVs</h3>
+                <p>Update structured datasets for papers and formulations.</p>
+              </article>
+              <article>
+                <img src="images/Trainer.png" alt="Trainer" />
+                <span>06</span>
+                <h3>Build Training Data</h3>
+                <p>Create measured-property ML files.</p>
+              </article>
+              <article>
+                <span>07</span>
+                <h3>Export ZIP</h3>
+                <p>Package dataset and audit bundles.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell agent-workflow-slide">
+            <div class="workflow-heading">
+              <h2>Agent Workflow</h2>
+              <p class="workflow-intro">
+                Each agent has a bounded job. The harness controls the decisions between them.
+              </p>
+            </div>
+            <div class="agent-flow">
+              <article>
+                <img src="images/Robo-Assist.png" alt="Robo-Assist" />
+                <h3>Paper Validation Agent</h3>
+                <p>Checks biomaterial relevance, duplicates, safety text, and extraction readiness.</p>
+                <strong>Decision: reject or continue</strong>
+              </article>
+              <article>
+                <img src="images/Scope.png" alt="Scope" />
+                <h3>Source Extraction Agent</h3>
+                <p>Reads PDF text, OCR pages, tables, and supplementary sources.</p>
+                <strong>Decision: enough evidence?</strong>
+              </article>
+              <article>
+                <img src="images/Mixer.png" alt="Mixer" />
+                <h3>Material/Formulation Extraction Agent</h3>
+                <p>Extracts materials, roles, wt%, process settings, and measured properties.</p>
+                <strong>Decision: evidence-backed row?</strong>
+              </article>
+              <article>
+                <img src="images/Trainer.png" alt="Trainer" />
+                <h3>Training Builder</h3>
+                <p>Filters measured-property rows and builds ML-ready CSV files.</p>
+                <strong>Decision: exportable dataset?</strong>
+              </article>
+              <article>
+                <img src="images/Dr.Bio.png" alt="Dr. Bio" />
+                <h3>Harness Assistant</h3>
+                <p>Answers dataset questions and runs only explicit approved commands.</p>
+                <strong>Decision: read-only or command?</strong>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell security-slide">
+            <div class="security-copy">
+              <h2>Safety by Design</h2>
+              <div class="security-lower">
+                <p>
+                  The model can suggest actions, but the harness decides what is allowed
+                  before anything touches files or data.
+                </p>
+                <ul>
+                  <li>No arbitrary shell access</li>
+                  <li>File writing stays inside project folders</li>
+                  <li>Commands use an approved allowlist</li>
+                  <li>Prompt-injection-like text is detected and ignored</li>
+                  <li>API keys and secrets are not sent into prompts</li>
+                  <li>Skills describe behavior; they are not executable code</li>
+                </ul>
+              </div>
+            </div>
+            <figure class="security-visual">
+              <img class="zoomable-image" src="images/slide6.png" alt="BioMaterial harness security design" tabindex="0" />
+              <figcaption>Click image to enlarge</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell commands-slide">
+            <div class="commands-copy">
+              <h2>Approved Commands</h2>
+              <p>
+                Natural-language prompts can request actions, but the harness only runs
+                commands that are explicitly allowlisted.
+              </p>
+            </div>
+            <div class="command-table" role="table" aria-label="Approved harness commands">
+              <div class="command-row command-head" role="row">
+                <span role="columnheader">Command</span>
+                <span role="columnheader">Purpose</span>
+              </div>
+              <div class="command-row" role="row">
+                <code>export_fortrain_zip</code>
+                <span>Export ML training CSVs</span>
+              </div>
+              <div class="command-row" role="row">
+                <code>export_dataset_zip</code>
+                <span>Export structured datasets</span>
+              </div>
+              <div class="command-row" role="row">
+                <code>export_audit_bundle_zip</code>
+                <span>Export datasets and logs</span>
+              </div>
+              <div class="command-row" role="row">
+                <code>validation_smoke_check</code>
+                <span>Check dataset health</span>
+              </div>
+            </div>
+            <p class="command-note">
+              CLI or chat prompts are interpreted only into these approved commands.
+              Anything outside the allowlist is refused or treated as a read-only question.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell extension-slide">
+            <div class="extension-tree">
+              <h2>Extension Mechanism</h2>
+              <div class="extension-lower">
+                <p>The harness loads local skill specifications from the project.</p>
+                <pre><code>skills/
+  biomaterial_extraction/
+    SKILL.md
+  export_training_data/
+    SKILL.md</code></pre>
+              </div>
+            </div>
+            <div class="skill-cards">
+              <article>
+                <h3>biomaterial_extraction</h3>
+                <p>Defines how papers, materials, formulations, and evidence should be handled.</p>
+              </article>
+              <article>
+                <h3>export_training_data</h3>
+                <p>Defines how clean CSVs and ML-ready export bundles should be prepared.</p>
+              </article>
+              <p class="extension-safety">
+                Skills are specifications, not executable plugins. The harness does not run
+                untrusted skill code.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide demo-evidence-single">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 1</span>
+              <h2>Home Page</h2>
+              <p>The Streamlit app opens directly into the biomaterial paper-to-dataset workspace.</p>
+            </div>
+            <figure class="demo-screenshot-frame">
+              <img class="zoomable-image" src="images/screenshots/1_Home_page.png" alt="Dr. Bio material lab home page" tabindex="0" />
+              <figcaption>Click image to enlarge</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 2</span>
+              <h2>Unrelated Paper Rejected</h2>
+              <p>The upload path accepts a paper, validates relevance, and stops unrelated material before extraction.</p>
+            </div>
+            <div class="demo-screenshot-pair">
+              <figure class="demo-screenshot-frame">
+                <img class="zoomable-image" src="images/screenshots/2_upload_paper.png" alt="Paper upload screen" tabindex="0" />
+                <figcaption>Upload paper</figcaption>
+              </figure>
+              <figure class="demo-screenshot-frame rejected">
+                <img class="zoomable-image" src="images/screenshots/3_unreleated_paper_rejected.png" alt="Unrelated paper rejected by validation" tabindex="0" />
+                <figcaption>Rejected as unrelated</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 3</span>
+              <h2>Valid Paper Accepted</h2>
+              <p>For a biomaterial paper, DOI-linked validation produces a score and then detects formulations.</p>
+            </div>
+            <div class="demo-screenshot-pair">
+              <figure class="demo-screenshot-frame accepted">
+                <img class="zoomable-image" src="images/screenshots/4_valid_bio_paper_accepted_detect_formulations.png" alt="Valid biomaterial paper accepted and formulations detected" tabindex="0" />
+                <figcaption>Accepted and formulations detected</figcaption>
+              </figure>
+              <figure class="demo-screenshot-frame scored">
+                <img class="zoomable-image" src="images/screenshots/4_2_validation_paper_Score.png" alt="DOI-linked paper validation score" tabindex="0" />
+                <figcaption>DOI validation score</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 4</span>
+              <h2>Extraction Agent Runs</h2>
+              <p>After validation, the agent extracts materials, formulations, and measured properties, then maps repeated materials and formulations without duplicate records.</p>
+            </div>
+            <div class="demo-screenshot-pair">
+              <figure class="demo-screenshot-frame accepted">
+                <img class="zoomable-image" src="images/screenshots/5_after_valid_agent_toextract_formulations.png" alt="Agent ready to extract formulations after valid paper acceptance" tabindex="0" />
+                <figcaption>Agent starts extraction</figcaption>
+              </figure>
+              <figure class="demo-screenshot-frame scored">
+                <img class="zoomable-image" src="images/screenshots/6_extraction_sucesfull.png" alt="Successful extraction of materials formulations and measured properties" tabindex="0" />
+                <figcaption>Extraction successful</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 5</span>
+              <h2>Data Overview</h2>
+              <p>Nine research papers are consolidated into mapped materials, formulations, and measured-property rows prepared for the ML pipeline.</p>
+            </div>
+            <div class="demo-screenshot-pair">
+              <figure class="demo-screenshot-frame">
+                <img class="zoomable-image" src="images/screenshots/7_data_overview_total_9papers.png" alt="Data overview showing total extracted data from nine research papers" tabindex="0" />
+                <figcaption>Overview from 9 papers</figcaption>
+              </figure>
+              <figure class="demo-screenshot-frame accepted">
+                <img class="zoomable-image" src="images/screenshots/8_materials_list_its_fornula_mapping_training_Data.png" alt="Materials list formulation mapping and training data prepared" tabindex="0" />
+                <figcaption>Materials, formulations, and ML data ready</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 6</span>
+              <h2>Harness Assistant</h2>
+              <p>The assistant explains the current dataset, reads logs, and answers questions such as why an earlier paper was rejected.</p>
+            </div>
+            <div class="demo-screenshot-pair">
+              <figure class="demo-screenshot-frame">
+                <img class="zoomable-image" src="images/screenshots/9_harness_Assistant_canask_related_todata.png" alt="Harness assistant can answer questions related to data and logs" tabindex="0" />
+                <figcaption>Ask about data or logs</figcaption>
+              </figure>
+              <figure class="demo-screenshot-frame accepted">
+                <img class="zoomable-image" src="images/screenshots/10_harness_assitant_reply.png" alt="Harness assistant reply explaining the data and rejection logs" tabindex="0" />
+                <figcaption>Assistant explains the evidence</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 7</span>
+              <h2>Controlled Commands</h2>
+              <p>The assistant can run approved download commands for logs, ML pipeline data, materials, and formulation datasheets without overwriting core data.</p>
+            </div>
+            <div class="demo-screenshot-pair">
+              <figure class="demo-screenshot-frame scored">
+                <img class="zoomable-image" src="images/screenshots/11_command_to_harness_assit_to_download_train_Data.png" alt="Harness assistant available commands for downloading training data and datasets" tabindex="0" />
+                <figcaption>Available approved commands</figcaption>
+              </figure>
+              <figure class="demo-screenshot-frame accepted">
+                <img class="zoomable-image" src="images/screenshots/12_command_Respond.png" alt="Harness assistant command response with downloadable files" tabindex="0" />
+                <figcaption>Command response with downloads</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell demo-evidence-slide demo-evidence-single">
+            <div class="demo-evidence-header">
+              <span>Demo Evidence 8</span>
+              <h2>Final Export</h2>
+              <p>The dashboard confirms export from nine papers into formulation, material, and measured-property data prepared for ML training.</p>
+            </div>
+            <figure class="demo-screenshot-frame accepted">
+              <img class="zoomable-image" src="images/screenshots/13_final_9_paper_exported_scuessfully.png" alt="Final dashboard showing nine papers exported successfully for ML training data" tabindex="0" />
+              <figcaption>Final export from 9 papers</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell coverage-slide">
+            <h2>Assignment Coverage</h2>
+            <div class="coverage-table" role="table" aria-label="Assignment coverage checklist">
+              <div class="coverage-row coverage-head" role="row">
+                <span role="columnheader">Requirement</span>
+                <span role="columnheader">My Implementation</span>
+              </div>
+              <div class="coverage-row" role="row">
+                <span>Working harness</span>
+                <span>Dr. Bio's Streamlit lab app backed by a Python agent harness</span>
+              </div>
+              <div class="coverage-row" role="row">
+                <span>File editing</span>
+                <span>Controlled dataset writers for papers, materials, formulations, and exports</span>
+              </div>
+              <div class="coverage-row" role="row">
+                <span>Commands</span>
+                <span>Natural-language requests map only to approved export and validation commands</span>
+              </div>
+              <div class="coverage-row" role="row">
+                <span>Extension</span>
+                <span>Local <code>skills/</code> folder with biomaterial extraction and training export specs</span>
+              </div>
+              <div class="coverage-row" role="row">
+                <span>Security</span>
+                <span>Rejected-paper log, prompt-injection checks, command allowlist, and documented risk handling</span>
+              </div>
+              <div class="coverage-row" role="row">
+                <span>Deliverables</span>
+                <span>GitHub code, README, screenshots, presentation, and live app link</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell conclusion-slide">
+            <div class="conclusion-copy">
+              <h2>Conclusion and Demo Access</h2>
+              <div class="conclusion-lower">
+                <p>
+                  The project turns the assignment into a secure, domain-specific
+                  agent harness for biomaterial dataset creation.
+                </p>
+              </div>
+            </div>
+            <div class="access-links">
+              <article>
+                <span>Project code</span>
+                <a href="https://github.com/Tokol/bioharness" target="_blank" rel="noopener noreferrer">github.com/Tokol/bioharness</a>
+              </article>
+              <article>
+                <span>Working app</span>
+                <a href="https://bioharness.streamlit.app/" target="_blank" rel="noopener noreferrer">bioharness.streamlit.app</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell references-slide">
+            <h2>Scientific References</h2>
+            <div class="reference-list">
+              <article>
+                <span>[1]</span>
+                <small>Yao, S. et al. (2023)</small>
+                <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer">
+                  ReAct: Synergizing Reasoning and Acting in Language Models
+                </a>
+              </article>
+              <article>
+                <span>[2]</span>
+                <small>Anthropic (2024)</small>
+                <a href="https://www.anthropic.com/research/model-context-protocol" target="_blank" rel="noopener noreferrer">
+                  Introducing the Model Context Protocol
+                </a>
+              </article>
+              <article>
+                <span>[3]</span>
+                <small>OpenAI (2025)</small>
+                <a href="https://openai.github.io/openai-agents-python/agents/" target="_blank" rel="noopener noreferrer">
+                  OpenAI Agents SDK: Agents
+                </a>
+              </article>
+              <article>
+                <span>[4]</span>
+                <small>OWASP Foundation (2025)</small>
+                <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener noreferrer">
+                  OWASP Top 10 for Large Language Model Applications
+                </a>
+              </article>
+              <article>
+                <span>[5]</span>
+                <small>NIST (2023)</small>
+                <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">
+                  AI Risk Management Framework
+                </a>
+              </article>
+            </div>
+            <p class="reference-note">
+              These works guided the design and evaluation of this system.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-shell thank-you-slide">
+            <div class="thank-you-copy">
+              <span>Thank you</span>
+              <h2>Thank You</h2>
+              <p>
+                Dr. Bio's Material Lab demonstrates a secure agent harness for turning
+                biomaterial research papers into mapped, ML-ready datasets.
+              </p>
+            </div>
+            <div class="thank-you-meta">
+              <p>Dr. Bio's Material Lab</p>
+              <p>Secure Agent Harness for Biomaterial Research Paper-to-Dataset Workflow</p>
+              <p>Suresh Lama</p>
+              <p>Vaasa, 2026</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="image-modal" id="image-modal" aria-hidden="true">
+      <button class="image-modal-close" type="button" aria-label="Close zoomed image">Close</button>
+      <img src="" alt="" />
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        controls: false,
+        progress: true,
+        center: false,
+        slideNumber: false,
+        transition: "slide",
+        width: 1280,
+        height: 720,
+        margin: 0.04
+      });
+
+      const imageModal = document.getElementById("image-modal");
+      const modalImage = imageModal.querySelector("img");
+      const closeImageModal = () => {
+        imageModal.classList.remove("is-open");
+        imageModal.setAttribute("aria-hidden", "true");
+        modalImage.src = "";
+        modalImage.alt = "";
+      };
+
+      document.querySelectorAll(".zoomable-image").forEach((image) => {
+        const openImageModal = (event) => {
+          event.stopPropagation();
+          modalImage.src = image.currentSrc || image.src;
+          modalImage.alt = image.alt;
+          imageModal.classList.add("is-open");
+          imageModal.setAttribute("aria-hidden", "false");
+        };
+
+        image.addEventListener("click", openImageModal);
+        image.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openImageModal(event);
+          }
+        });
+      });
+
+      imageModal.addEventListener("click", (event) => {
+        if (event.target === imageModal || event.target.classList.contains("image-modal-close")) {
+          closeImageModal();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && imageModal.classList.contains("is-open")) {
+          closeImageModal();
+        }
+      });
+    </script>
+  </body>
+</html>
